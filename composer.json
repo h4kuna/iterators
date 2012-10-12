@@ -1,8 +1,8 @@
 {
-    "name": "h4kuna/text-iterator",
+    "name": "h4kuna/iterators",
     "type": "library",
     "description": "lock thred",
-    "homepage": "https://github.com/h4kuna/text-iterator",
+    "homepage": "https://github.com/h4kuna/iterators",
     "license": "MIT",
     "authors": [
     {
