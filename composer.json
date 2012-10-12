@@ -1,7 +1,7 @@
 {
     "name": "h4kuna/iterators",
     "type": "library",
-    "description": "lock thred",
+    "description": "tools ala iterators",
     "homepage": "https://github.com/h4kuna/iterators",
     "license": "MIT",
     "authors": [
