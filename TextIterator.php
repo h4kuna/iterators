@@ -42,7 +42,11 @@ class TextIterator extends \ArrayIterator {
 
     public function current() {
         if ($this->csv['active']) {
-            return str_getcsv(parent::current(), $this->csv['delimiter'], $this->csv['enclosure'], $this->csv['escape']);
+            $content = parent::current();
+            if ($content) {
+                return str_getcsv($content, $this->csv['delimiter'], $this->csv['enclosure'], $this->csv['escape']);
+            }
+            return array();
         }
         return parent::current();
     }
