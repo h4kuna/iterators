@@ -31,7 +31,7 @@ class Base64Array extends \ArrayIterator {
     protected function decode($s) {
         $base = @unserialize(base64_decode($s));
         if (!$base) {
-            $base = array();
+            throw new \RuntimeException('This is not valid base64 hash.');
         }
 
         if ($this->check > 0 && strlen($base) > $this->check) {
