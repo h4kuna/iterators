@@ -11,6 +11,7 @@ use ArrayIterator;
  */
 class TextIterator extends ArrayIterator {
 
+    const SKIP_FIRST_LINE = 536870912;
     const TRIM_LINE = 1073741824;
     const SKIP_EMPTY_LINE = 2147483648;
     const CSV_MODE = 4294967296;
@@ -85,6 +86,13 @@ class TextIterator extends ArrayIterator {
             return str_getcsv($content, $this->csv['delimiter'], $this->csv['enclosure'], $this->csv['escape']);
         }
         return $content;
+    }
+
+    public function rewind() {
+        parent::rewind();
+        if (self::SKIP_FIRST_LINE & $this->getFlags()) {
+            $this->next();
+        }
     }
 
     /** @return bool */
