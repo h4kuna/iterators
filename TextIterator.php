@@ -11,9 +11,10 @@ use ArrayIterator;
  */
 class TextIterator extends ArrayIterator {
 
-    const TRIM_LINE = 1073741824;
-    const SKIP_EMPTY_LINE = 2147483648;
-    const CSV_MODE = 4294967296;
+    const SKIP_EMPTY_LINE = 1048576; // 2^20
+    const CSV_MODE = 2097152; // 2^21
+    const SKIP_FIRST_LINE = 4194304; // 2^22
+    const TRIM_LINE = 8388608; /* 2^23 */
 
     /** @var string */
     private $_current;
