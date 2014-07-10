@@ -88,6 +88,13 @@ class TextIterator extends ArrayIterator {
         return $content;
     }
 
+    public function rewind() {
+        parent::rewind();
+        if (self::SKIP_FIRST_LINE & $this->getFlags()) {
+            $this->next();
+        }
+    }
+
     /** @return bool */
     public function valid() {
         do {
