@@ -1,4 +1,4 @@
-text-iterator
+iterators
 =============
 
 TextIterator - through the text line by line
