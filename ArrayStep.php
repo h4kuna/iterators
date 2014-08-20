@@ -124,7 +124,7 @@ class ArrayStep extends \ArrayIterator {
 
     /**
      * posun ukazatele o jedno
-     * @param bool $move
+     * @param bool $next
      * @return void
      */
     public function move($next = TRUE) {

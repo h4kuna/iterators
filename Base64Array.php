@@ -2,45 +2,56 @@
 
 namespace h4kuna;
 
+use ArrayIterator;
+use RuntimeException;
+
 /**
  * convert hash to array and array to hash
  *
  * @author Milan Matějček
  */
-class Base64Array extends \ArrayIterator {
-
-    private $check;
+class Base64Array extends ArrayIterator {
 
     /**
      * @param array|string $array
      */
-    public function __construct($array, $check = 0) {
+    public function __construct($array) {
         if (is_string($array)) {
             $array = $this->decode($array);
         } elseif (!is_array($array)) {
-            throw new \RuntimeException('Param must be array or string');
+            throw new RuntimeException('Param must be array or string');
         }
-        $this->check = $check;
         parent::__construct($array);
     }
 
-    protected function encode(\ArrayIterator $array) {
+    /**
+     * 
+     * @param self $array
+     * @return string
+     */
+    private function encode(ArrayIterator $array) {
         return base64_encode(serialize($array->getArrayCopy()));
     }
 
-    protected function decode($s) {
+    /**
+     * 
+     * @param string $s
+     * @return self
+     * @throws RuntimeException
+     */
+    private function decode($s) {
         $base = @unserialize(base64_decode($s));
         if (!$base) {
-            throw new \RuntimeException('This is not valid base64 hash.');
+            throw new RuntimeException('This is not valid base64 hash. ' . $s);
         }
-
-        if ($this->check > 0 && strlen($base) > $this->check) {
-            throw new \RuntimeException('Length of encode string is higger than is allowed. ' . $base);
-        }
-
         return $base;
     }
 
+    /**
+     * Base 64 encoded string.
+     * 
+     *  @return string
+     */
     public function hash() {
         return $this->encode($this);
     }
