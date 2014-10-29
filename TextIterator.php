@@ -54,7 +54,7 @@ class TextIterator extends ArrayIterator {
     }
 
     private function text2Array($text) {
-        return is_array($text) ? $text : explode("\n", rtrim(preg_replace("/\n?\r/", "\n", $text)));
+        return is_array($text) ? $text : explode("\n", rtrim(preg_replace("/\r(?:\n)?/", "\n", $text)));
     }
 
     /**
