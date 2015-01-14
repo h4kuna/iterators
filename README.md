@@ -37,10 +37,10 @@ Base64Array
 Create hash based on the base_64 from array and back.
 
 ```php
-$array = Base64Array(array('milan', 'matejcek'));
+$array = new Base64Array(array('milan', 'matejcek'));
 echo $array; // YToyOntpOjA7czo1OiJtaWxhbiI7aToxO3M6ODoibWF0ZWpjZWsiO30=
 
-$array = Base64Array('YToyOntpOjA7czo1OiJtaWxhbiI7aToxO3M6ODoibWF0ZWpjZWsiO30=');
+$array = new Base64Array('YToyOntpOjA7czo1OiJtaWxhbiI7aToxO3M6ODoibWF0ZWpjZWsiO30=');
 var_dump((array) $array); // array('milan', 'matejcek')
 ```
 
