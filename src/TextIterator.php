@@ -9,7 +9,8 @@ use ArrayIterator;
  * 
  * @author Milan Matějček <milan.matejcek@gmail.com>
  */
-class TextIterator extends ArrayIterator {
+class TextIterator extends ArrayIterator
+{
 
     const SKIP_EMPTY_LINE = 1048576; // 2^20
     const CSV_MODE = 2097152; // 2^21
@@ -29,7 +30,8 @@ class TextIterator extends ArrayIterator {
         'escape' => '\\'
     );
 
-    public function __construct($text) {
+    public function __construct($text)
+    {
         parent::__construct($this->text2Array($text));
     }
 
@@ -41,7 +43,8 @@ class TextIterator extends ArrayIterator {
      * @param string $escape
      * @return self
      */
-    public function setCsv($delimiter = NULL, $enclosure = '"', $escape = '\\') {
+    public function setCsv($delimiter = NULL, $enclosure = '"', $escape = '\\')
+    {
         $this->setFlags($this->getFlags() | self::SKIP_EMPTY_LINE | self::CSV_MODE | self::TRIM_LINE);
         if ($delimiter !== NULL) {
             $this->csv = array(
@@ -53,34 +56,36 @@ class TextIterator extends ArrayIterator {
         return $this;
     }
 
-    private function text2Array($text) {
-        return is_array($text) ? $text : explode("\n", rtrim(preg_replace("/\r(?:\n)?/", "\n", $text)));
-    }
-
-    /**
-     * Use in while cycle.
-     * 
-     * @return bool
-     */
-    public function nextWhile() {
-        return $this->next() && $this->valid();
+    private function text2Array($text)
+    {
+        return is_array($text) ? $text : explode("\n", rtrim(preg_replace("/\r\n|\n\r|\r/", "\n", $text)));
     }
 
     /**
      * Change API behavior *****************************************************
      * *************************************************************************
      */
-    public function setFlags($flags) {
+
+    /**
+     * 
+     * @param int $flags
+     * @return self
+     */
+    public function setFlags($flags)
+    {
         parent::setFlags($flags);
         $this->flags = $flags;
+        return $this;
     }
 
-    public function getFlags() {
+    public function getFlags()
+    {
         return parent::getFlags() | $this->flags;
     }
 
     /** @return string */
-    public function current() {
+    public function current()
+    {
         $content = $this->_current;
         if ($this->getFlags() & self::CSV_MODE) {
             return str_getcsv($content, $this->csv['delimiter'], $this->csv['enclosure'], $this->csv['escape']);
@@ -88,7 +93,8 @@ class TextIterator extends ArrayIterator {
         return $content;
     }
 
-    public function rewind() {
+    public function rewind()
+    {
         parent::rewind();
         if (self::SKIP_FIRST_LINE & $this->getFlags()) {
             $this->next();
@@ -96,7 +102,8 @@ class TextIterator extends ArrayIterator {
     }
 
     /** @return bool */
-    public function valid() {
+    public function valid()
+    {
         do {
             $valid = parent::valid();
             $this->_current = parent::current();
@@ -105,16 +112,6 @@ class TextIterator extends ArrayIterator {
             }
         } while ($valid && $this->getFlags() & self::SKIP_EMPTY_LINE && !$this->_current && $this->next());
         return $valid;
-    }
-
-    /**
-     * For while cycle return TRUE
-     * 
-     * @return bool 
-     */
-    public function next() {
-        parent::next();
-        return TRUE;
     }
 
 }
