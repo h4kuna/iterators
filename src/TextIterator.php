@@ -114,4 +114,15 @@ class TextIterator extends ArrayIterator
         return $valid;
     }
 
+    /**
+     * Used for empty lines.
+     * 
+     * @return TRUE
+     */
+    public function next()
+    {
+        parent::next();
+        return TRUE;
+    }
+
 }
