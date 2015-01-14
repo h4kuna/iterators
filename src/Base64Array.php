@@ -10,12 +10,14 @@ use RuntimeException;
  *
  * @author Milan Matějček
  */
-class Base64Array extends ArrayIterator {
+class Base64Array extends ArrayIterator
+{
 
     /**
      * @param array|string $array
      */
-    public function __construct($array) {
+    public function __construct($array)
+    {
         if (is_string($array)) {
             $array = $this->decode($array);
         } elseif (!is_array($array)) {
@@ -29,7 +31,8 @@ class Base64Array extends ArrayIterator {
      * @param self $array
      * @return string
      */
-    private function encode(ArrayIterator $array) {
+    private function encode(ArrayIterator $array)
+    {
         return base64_encode(serialize($array->getArrayCopy()));
     }
 
@@ -39,7 +42,8 @@ class Base64Array extends ArrayIterator {
      * @return self
      * @throws RuntimeException
      */
-    private function decode($s) {
+    private function decode($s)
+    {
         $base = @unserialize(base64_decode($s));
         if (!$base) {
             throw new RuntimeException('This is not valid base64 hash. ' . $s);
@@ -52,11 +56,13 @@ class Base64Array extends ArrayIterator {
      * 
      *  @return string
      */
-    public function hash() {
+    public function hash()
+    {
         return $this->encode($this);
     }
 
-    public function __toString() {
+    public function __toString()
+    {
         return $this->hash();
     }
 
