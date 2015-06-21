@@ -5,7 +5,7 @@ h4kuna\iterators
 
 Best way to install h4kuna\iterators is using composer.
 ```
-$ composer require h4kuna/iterators:~1.1
+$ composer require h4kuna/iterators
 ```
 
 TextIterator
