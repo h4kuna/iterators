@@ -19,7 +19,7 @@
     },
     "autoload": {
         "psr-4": {
-            "h4kuna\\": "src/"
+            "h4kuna\\Iterators\\": "src/"
         }
     }
 }

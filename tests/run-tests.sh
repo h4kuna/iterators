@@ -1,5 +1,8 @@
 #!/bin/bash
 
-TESTS_PATH=`dirname $0`
+DIR=`dirname $0`
+cd $DIR/..
 
-$TESTS_PATH/../vendor/phpunit/phpunit/phpunit -c $TESTS_PATH/phpunit.xml $@
+composer install --no-interaction --prefer-source
+
+$DIR/../vendor/bin/phpunit -c $DIR/phpunit.xml $@

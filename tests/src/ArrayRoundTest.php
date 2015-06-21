@@ -1,6 +1,6 @@
 <?php
 
-namespace h4kuna;
+namespace h4kuna\Iterators;
 
 class ArrayRoundTest extends \PHPUnit_Framework_TestCase
 {

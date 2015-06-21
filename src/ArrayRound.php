@@ -1,10 +1,6 @@
 <?php
 
-namespace h4kuna;
-
-use ArrayIterator;
-use Iterator;
-use RuntimeException;
+namespace h4kuna\Iterators;
 
 /**
  * @author Milan Matějček
@@ -15,12 +11,16 @@ class ArrayRound
     /** @var Iterator */
     private $data;
 
+	/**
+	 * @param array|\ArrayIterator $data
+	 * @throws \RuntimeException
+	 */
     public function __construct($data)
     {
         if (is_array($data)) {
             $data = new ArrayIterator($data);
-        } elseif (!$data instanceof Iterator) {
-            throw new RuntimeException('Input must be instance of interface Iterator or basic array.');
+        } elseif (!$data instanceof \Iterator) {
+            throw new \RuntimeException('Input must be instance of interface Iterator or basic array.');
         }
         $this->data = $data;
         $this->rewind();
