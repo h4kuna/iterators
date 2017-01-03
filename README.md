@@ -57,3 +57,33 @@ $array->item(); // joe
 $array->item(); // foo
 // and go next
 ```
+
+RangeIterator
+-----------
+
+Iterate in range defined by keys. Implemented Linked list.
+
+```php
+$range = new RangeIterator(['name' => 'milan', 'surname' => 'matejcek', 'lang' => 'php', 'gender' => 'male']);
+foreach($range->from('lang') as $v) {
+	echo $v;
+}
+// php
+// male
+
+$range->reset();
+foreach($range->to('surname') as $v) {
+	echo $v;
+}
+// milan
+// matejcek
+
+
+$range->reset();
+foreach($range->between('surname', 'lang') as $v) {
+	echo $v;
+}
+// matejcek
+// php
+
+```
