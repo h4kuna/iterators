@@ -21,11 +21,11 @@ class TextIterator extends \ArrayIterator
 	private $flags;
 
 	/** @var array */
-	private $csv = array(
+	private $csv = [
 		'delimiter' => ',',
 		'enclosure' => '"',
 		'escape' => '\\'
-	);
+	];
 
 	public function __construct($text)
 	{
@@ -43,11 +43,11 @@ class TextIterator extends \ArrayIterator
 	{
 		$this->setFlags($this->getFlags() | self::SKIP_EMPTY_LINE | self::CSV_MODE | self::TRIM_LINE);
 		if ($delimiter !== NULL) {
-			$this->csv = array(
+			$this->csv = [
 				'delimiter' => $delimiter,
 				'enclosure' => $enclosure,
 				'escape' => $escape
-			);
+			];
 		}
 		return $this;
 	}

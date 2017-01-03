@@ -2,7 +2,12 @@
 
 namespace h4kuna\Iterators;
 
-class TextIteratorTest extends \PHPUnit_Framework_TestCase
+use Salamium\Testinium\File,
+	Tester\Assert;
+
+require __DIR__ . '/../bootstrap.php';
+
+class TextIteratorTest extends \Tester\TestCase
 {
 
 	/**
@@ -29,35 +34,35 @@ class TextIteratorTest extends \PHPUnit_Framework_TestCase
 	public function testNoSetup()
 	{
 		$compare = $this->loadContent();
-		$this->assertSame(self::getFileContent('noSetup'), $compare);
+		Assert::same(File::load('noSetup.csv'), $compare);
 	}
 
 	public function testSkipEmpty()
 	{
 		$this->object->setFlags(TextIterator::SKIP_EMPTY_LINE);
 		$compare = $this->loadContent();
-		$this->assertSame(self::getFileContent('emptyLine'), $compare);
+		Assert::same(File::load('emptyLine.csv'), $compare);
 	}
 
 	public function testSkipEmptyTrim()
 	{
 		$this->object->setFlags(TextIterator::SKIP_EMPTY_LINE | TextIterator::TRIM_LINE);
 		$compare = $this->loadContent();
-		$this->assertSame(self::getFileContent('trimEmptyLine'), $compare);
+		Assert::same(File::load('trimEmptyLine.csv'), $compare);
 	}
 
 	public function testCsvWithHead()
 	{
 		$this->object->setCsv(';');
 		$compare = $this->loadContent();
-		$this->assertSame(self::getFileContent('csvWithHead'), $compare);
+		Assert::same(File::load('csvWithHead.csv'), $compare);
 	}
 
 	public function testCsv()
 	{
 		$this->object->setFlags(TextIterator::SKIP_FIRST_LINE)->setCsv(';');
 		$compare = $this->loadContent();
-		$this->assertSame(self::getFileContent('csv'), $compare);
+		Assert::same(File::load('csv.csv'), $compare);
 	}
 
 	private function loadContent()
@@ -73,3 +78,5 @@ class TextIteratorTest extends \PHPUnit_Framework_TestCase
 	}
 
 }
+
+(new TextIteratorTest)->run();

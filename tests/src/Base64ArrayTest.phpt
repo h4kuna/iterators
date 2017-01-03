@@ -2,7 +2,11 @@
 
 namespace h4kuna\Iterators;
 
-class Base64ArrayTest extends \PHPUnit_Framework_TestCase
+use Tester\Assert;
+
+require __DIR__ . '/../bootstrap.php';
+
+class Base64ArrayTest extends \Tester\TestCase
 {
 
 	private static function getHash()
@@ -12,7 +16,7 @@ class Base64ArrayTest extends \PHPUnit_Framework_TestCase
 
 	private static function getArray()
 	{
-		return array('milan', 'matejcek');
+		return ['milan', 'matejcek'];
 	}
 
 	/**
@@ -23,15 +27,17 @@ class Base64ArrayTest extends \PHPUnit_Framework_TestCase
 	{
 		$data = self::getArray();
 		$base64 = new Base64Array($data);
-		$this->assertSame('matejcek', $base64[1]);
-		$this->assertSame(self::getHash(), $base64->hash());
+		Assert::same('matejcek', $base64[1]);
+		Assert::same(self::getHash(), $base64->hash());
 	}
 
 	public function testFromString()
 	{
 		$base64 = new Base64Array(self::getHash());
-		$this->assertSame('matejcek', $base64[1]);
-		$this->assertSame(self::getArray(), (array) $base64);
+		Assert::same('matejcek', $base64[1]);
+		Assert::same(self::getArray(), (array) $base64);
 	}
 
 }
+
+(new Base64ArrayTest)->run();

@@ -6,8 +6,5 @@ php:
   - 5.6
   - 7.0
 
-before_script:
-  - composer self-update
-
 script:
-    - ./tests/run-tests.sh
+    - ./tests/run-tests
