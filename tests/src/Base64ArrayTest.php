@@ -23,7 +23,7 @@ class Base64ArrayTest extends \Tester\TestCase
 	 * @covers h4kuna\Base64Array::hash
 	 * @todo   Implement testHash().
 	 */
-	public function testFromArray()
+	public function testFromArray(): void
 	{
 		$data = self::getArray();
 		$base64 = new Base64Array($data);
@@ -31,7 +31,7 @@ class Base64ArrayTest extends \Tester\TestCase
 		Assert::same(self::getHash(), $base64->hash());
 	}
 
-	public function testFromString()
+	public function testFromString(): void
 	{
 		$base64 = new Base64Array(self::getHash());
 		Assert::same('matejcek', $base64[1]);

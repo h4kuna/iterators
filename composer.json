@@ -1,25 +1,31 @@
 {
-	"name": "h4kuna/iterators",
-	"type": "library",
-	"description": "tools ala iterators",
-	"homepage": "https://github.com/h4kuna/iterators",
-	"license": "MIT",
-	"authors": [
-		{
-			"name": "Milan Matějček",
-			"email": "milan.matejcek@gmail.com",
-			"role": "Developer"
-		}
-	],
-	"require": {
-		"php": ">=5.3.0"
-	},
-	"require-dev": {
-		"salamium/testinium": "dev-master"
-	},
-	"autoload": {
-		"psr-4": {
-			"h4kuna\\Iterators\\": "src/"
-		}
-	}
+  "name": "h4kuna/iterators",
+  "type": "library",
+  "description": "tools ala iterators",
+  "homepage": "https://github.com/h4kuna/iterators",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Milan Matějček",
+      "email": "milan.matejcek@gmail.com",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": ">=7.4.0"
+  },
+  "require-dev": {
+    "salamium/testinium": "dev-master",
+    "phpstan/phpstan": "^1.8"
+  },
+  "autoload": {
+    "psr-4": {
+      "h4kuna\\Iterators\\": "src/"
+    }
+  },
+  "scripts": {
+    "phpstan": [
+      "vendor/bin/phpstan analyse --level max src tests"
+    ]
+  }
 }

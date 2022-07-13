@@ -14,19 +14,27 @@ class ArrayRoundTest extends \Tester\TestCase
 	 */
 	private $arrayRound;
 
-	protected function setUp()
+
+	protected function setUp(): void
 	{
 		$this->arrayRound = new ArrayRound(new \ArrayIterator(self::getItems()));
 	}
 
-	private static function getItems()
+
+	/**
+	 * @return array<string>
+	 */
+	private static function getItems(): array
 	{
 		return [
-			'name', 'surname', 'email'
+			'name',
+			'surname',
+			'email',
 		];
 	}
 
-	public function testRound()
+
+	public function testRound(): void
 	{
 		$this->arrayRound = new ArrayRound(self::getItems());
 		foreach (array_merge(self::getItems(), self::getItems(), self::getItems()) as $v) {
@@ -34,11 +42,12 @@ class ArrayRoundTest extends \Tester\TestCase
 		}
 	}
 
-	public function testEmpty()
+
+	public function testEmpty(): void
 	{
 		$this->arrayRound = new ArrayRound(new \ArrayIterator([]));
 		foreach (array_merge(self::getItems(), self::getItems(), self::getItems()) as $v) {
-			Assert::same(NULL, $this->arrayRound->item());
+			Assert::same(null, $this->arrayRound->item());
 		}
 	}
 

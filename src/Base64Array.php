@@ -4,7 +4,6 @@ namespace h4kuna\Iterators;
 
 /**
  * Convert hash to array and array to hash.
- * @author Milan Matějček
  */
 class Base64Array extends \ArrayIterator
 {

@@ -9,7 +9,7 @@ require __DIR__ . '/../bootstrap.php';
 class RangeIteratorTest extends \Tester\TestCase
 {
 
-	public function testEmpty()
+	public function testEmpty(): void
 	{
 		$iterator = new RangeIterator([]);
 		Assert::same(0, $iterator->count());
@@ -18,7 +18,7 @@ class RangeIteratorTest extends \Tester\TestCase
 		}
 	}
 
-	public function testFrom()
+	public function testFrom(): void
 	{
 		$iterator = $this->createRangeIterator();
 		$iterator->from('d');
@@ -35,7 +35,7 @@ class RangeIteratorTest extends \Tester\TestCase
 		Assert::same(['d' => 4, 'e' => 5], $out);
 	}
 
-	public function testTo()
+	public function testTo(): void
 	{
 		$iterator = $this->createRangeIterator();
 		$iterator->to('b');
@@ -52,7 +52,7 @@ class RangeIteratorTest extends \Tester\TestCase
 		Assert::same(['a' => 1, 'b' => 2], $out);
 	}
 
-	public function testBetween()
+	public function testBetween(): void
 	{
 		$iterator = $this->createRangeIterator();
 		$iterator->between('b', 'd');
@@ -73,7 +73,7 @@ class RangeIteratorTest extends \Tester\TestCase
 		Assert::same(['b' => 2, 'c' => 3, 'd' => 4], $out);
 	}
 
-	public function testPrev()
+	public function testPrev(): void
 	{
 		$iterator = $this->createRangeIterator();
 		$iterator->from('c')->rewind();
@@ -83,7 +83,7 @@ class RangeIteratorTest extends \Tester\TestCase
 		Assert::same('a', $iterator->key());
 	}
 
-	public function testReturnValueIterator()
+	public function testReturnValueIterator(): void
 	{
 		$iterator = $this->createRangeIterator();
 		Assert::same($iterator, $iterator->rewind());

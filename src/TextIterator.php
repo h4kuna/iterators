@@ -1,61 +1,72 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace h4kuna\Iterators;
 
 /**
  * Iterate via line
- * @author Milan Matějček <milan.matejcek@gmail.com>
+ * @phpstan-type LINE string|array<string>
+ * @extends \ArrayIterator<int, LINE>
  */
 class TextIterator extends \ArrayIterator
 {
 
-	const SKIP_EMPTY_LINE = 1048576; // 2^20
-	const CSV_MODE = 2097152; // 2^21
-	const SKIP_FIRST_LINE = 4194304; // 2^22
-	const TRIM_LINE = 8388608; /* 2^23 */
+	public const SKIP_EMPTY_LINE = 1048576; // 2^20
+	public const CSV_MODE = 2097152; // 2^21
+	public const SKIP_FIRST_LINE = 4194304; // 2^22
+	public const TRIM_LINE = 8388608; // 2^23
 
-	/** @var string */
-	private $_current;
+	private string $_current = '';
 
-	/** @var int */
-	private $flags;
+	private int $flags = 0;
 
-	/** @var array */
+	/** @var array<string, string> */
 	private $csv = [
 		'delimiter' => ',',
 		'enclosure' => '"',
-		'escape' => '\\'
+		'escape' => '\\',
 	];
 
+
+	/**
+	 * @param LINE $text
+	 */
 	public function __construct($text)
 	{
-		parent::__construct($this->text2Array($text));
+		parent::__construct(self::text2Array($text));
 	}
+
 
 	/**
 	 * Active csv parser.
-	 * @param NULL|string $delimiter
-	 * @param string $enclosure
-	 * @param string $escape
 	 * @return self
 	 */
-	public function setCsv($delimiter = NULL, $enclosure = '"', $escape = '\\')
+	public function setCsv(string $delimiter = ',', string $enclosure = '"', string $escape = '\\')
 	{
 		$this->setFlags($this->getFlags() | self::SKIP_EMPTY_LINE | self::CSV_MODE | self::TRIM_LINE);
-		if ($delimiter !== NULL) {
+		if ($delimiter !== null) {
 			$this->csv = [
 				'delimiter' => $delimiter,
 				'enclosure' => $enclosure,
-				'escape' => $escape
+				'escape' => $escape,
 			];
 		}
+
 		return $this;
 	}
 
-	private function text2Array($text)
+
+	/**
+	 * @param LINE $text
+	 * @return array<string>
+	 */
+	private static function text2Array($text): array
 	{
-		return is_array($text) ? $text : explode("\n", rtrim(preg_replace("/\r\n|\n\r|\r/", "\n", $text)));
+		$text = preg_replace("/\r\n|\n\r|\r/", "\n", $text);
+		assert($text !== null);
+
+		return is_array($text) ? $text : explode("\n", rtrim($text));
 	}
+
 
 	/**
 	 * Change API behavior *****************************************************
@@ -63,33 +74,37 @@ class TextIterator extends \ArrayIterator
 	 */
 
 	/**
-	 *
 	 * @param int $flags
-	 * @return self
 	 */
 	public function setFlags($flags)
 	{
 		parent::setFlags($flags);
 		$this->flags = $flags;
-		return $this;
 	}
 
-	public function getFlags()
+
+	public function getFlags(): int
 	{
 		return parent::getFlags() | $this->flags;
 	}
 
-	/** @return string */
+
+	/** @return LINE */
 	public function current()
 	{
 		$content = $this->_current;
 		if ($this->getFlags() & self::CSV_MODE) {
-			return str_getcsv($content, $this->csv['delimiter'], $this->csv['enclosure'], $this->csv['escape']);
+			$result = str_getcsv($content, $this->csv['delimiter'], $this->csv['enclosure'], $this->csv['escape']);
+			assert(is_array($result));
+
+			return $result;
 		}
+
 		return $content;
 	}
 
-	public function rewind()
+
+	public function rewind(): void
 	{
 		parent::rewind();
 		if (self::SKIP_FIRST_LINE & $this->getFlags()) {
@@ -97,27 +112,33 @@ class TextIterator extends \ArrayIterator
 		}
 	}
 
-	/** @return bool */
-	public function valid()
+
+	public function valid(): bool
 	{
 		do {
-			$valid = parent::valid();
-			$this->_current = parent::current();
+			if (parent::valid() === false) {
+				return false;
+			}
+			$current = parent::current();
+			assert(is_string($current));
+			$this->_current = $current;
 			if ($this->getFlags() & self::TRIM_LINE) {
 				$this->_current = trim($this->_current);
 			}
-		} while ($valid && $this->getFlags() & self::SKIP_EMPTY_LINE && !$this->_current && $this->next());
-		return $valid;
+		} while ($this->getFlags() & self::SKIP_EMPTY_LINE && !$this->_current && $this->next());
+
+		return true;
 	}
+
 
 	/**
 	 * Used for empty lines.
-	 * @return TRUE
 	 */
-	public function next()
+	public function next(): bool
 	{
 		parent::next();
-		return TRUE;
+
+		return true;
 	}
 
 }
