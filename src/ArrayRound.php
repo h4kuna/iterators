@@ -3,12 +3,13 @@
 namespace h4kuna\Iterators;
 
 /**
- * @author Milan Matějček
+ * @deprecated see
+ * @see \InfiniteIterator
  */
 class ArrayRound
 {
 
-	/** @var Iterator */
+	/** @var \Iterator */
 	private $data;
 
 	/**

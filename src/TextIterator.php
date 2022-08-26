@@ -19,18 +19,15 @@ class TextIterator extends \ArrayIterator
 
 	private int $flags = 0;
 
-	/** @var array<string, string> */
-	private $csv = [
+	/** @var array{delimiter: string, enclosure: string, escape: string} */
+	private array $csv = [
 		'delimiter' => ',',
 		'enclosure' => '"',
 		'escape' => '\\',
 	];
 
 
-	/**
-	 * @param LINE $text
-	 */
-	public function __construct($text)
+	public function __construct(string $text)
 	{
 		parent::__construct(self::text2Array($text));
 	}
@@ -56,10 +53,9 @@ class TextIterator extends \ArrayIterator
 
 
 	/**
-	 * @param LINE $text
 	 * @return array<string>
 	 */
-	private static function text2Array($text): array
+	private static function text2Array(string $text): array
 	{
 		$text = preg_replace("/\r\n|\n\r|\r/", "\n", $text);
 		assert($text !== null);
@@ -125,18 +121,7 @@ class TextIterator extends \ArrayIterator
 			if ($this->getFlags() & self::TRIM_LINE) {
 				$this->_current = trim($this->_current);
 			}
-		} while ($this->getFlags() & self::SKIP_EMPTY_LINE && !$this->_current && $this->next());
-
-		return true;
-	}
-
-
-	/**
-	 * Used for empty lines.
-	 */
-	public function next(): bool
-	{
-		parent::next();
+		} while ($this->getFlags() & self::SKIP_EMPTY_LINE && !$this->_current && $this->next() === null);
 
 		return true;
 	}

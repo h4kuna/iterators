@@ -2,6 +2,9 @@
 
 namespace h4kuna\Iterators;
 
+/**
+ * @see \LimitIterator
+ */
 class RangeIterator implements \Iterator, \Countable, \ArrayAccess
 {
 

@@ -1,7 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace h4kuna\Iterators;
+namespace h4kuna\Iterators\Tests;
 
+use h4kuna\Iterators\TextIterator;
 use Salamium\Testinium\File;
 use Tester\Assert;
 

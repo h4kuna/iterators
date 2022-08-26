@@ -1,7 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
-namespace h4kuna\Iterators;
+namespace h4kuna\Iterators\Tests;
 
+use h4kuna\Iterators\RangeIterator;
 use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';
