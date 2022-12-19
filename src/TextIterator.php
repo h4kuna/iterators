@@ -63,7 +63,7 @@ class TextIterator extends \ArrayIterator
 		$text = preg_replace("/\r\n|\n\r|\r/", "\n", $text);
 		assert($text !== null);
 
-		return explode("\n", rtrim($text));
+		return explode("\n", $text);
 	}
 
 
@@ -103,7 +103,7 @@ class TextIterator extends \ArrayIterator
 	public function rewind(): void
 	{
 		parent::rewind();
-		if (self::SKIP_FIRST_LINE & $this->getFlags()) {
+		if ($this->valid() && self::SKIP_FIRST_LINE & $this->getFlags()) {
 			$this->next();
 		}
 	}
