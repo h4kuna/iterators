@@ -1,7 +1,10 @@
 h4kuna\iterators
 ================
 
-[![Build Status](https://travis-ci.org/h4kuna/iterators.svg?branch=master)](https://travis-ci.org/h4kuna/iterators)
+[![Downloads this Month](https://img.shields.io/packagist/dm/h4kuna/iterators.svg)](https://packagist.org/packages/h4kuna/iterators)
+[![Latest Stable Version](https://poser.pugx.org/h4kuna/iterators/v/stable?format=flat)](https://packagist.org/packages/h4kuna/iterators)
+[![Total Downloads](https://poser.pugx.org/h4kuna/iterators/downloads?format=flat)](https://packagist.org/packages/h4kuna/iterators)
+[![License](https://poser.pugx.org/h4kuna/iterators/license?format=flat)](https://packagist.org/packages/h4kuna/iterators)
 
 Best way to install h4kuna\iterators is using composer.
 ```
