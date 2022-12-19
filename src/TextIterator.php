@@ -27,9 +27,12 @@ class TextIterator extends \ArrayIterator
 	];
 
 
-	public function __construct(string $text)
+	/**
+	 * @param array<string>|string $text
+	 */
+	public function __construct(array|string $text)
 	{
-		parent::__construct(self::text2Array($text));
+		parent::__construct(is_array($text) ? $text : self::text2Array($text));
 	}
 
 
