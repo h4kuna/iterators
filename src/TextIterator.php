@@ -4,7 +4,7 @@ namespace h4kuna\Iterators;
 
 /**
  * Iterate via line
- * @phpstan-type LINE string|array<string>
+ * @phpstan-type LINE string|array<int, string|null>
  * @extends \ArrayIterator<int, LINE>
  */
 class TextIterator extends \ArrayIterator

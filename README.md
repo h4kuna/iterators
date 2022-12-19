@@ -31,59 +31,56 @@ joe
 */
 ```
 
-Base64Array
+FlattenArrayIterator
 -----------
 
-Create hash based on the base_64 from array and back.
+Make one level array from multidimensional with to use delimiter for join keys.
 
 ```php
-$array = new Base64Array(array('milan', 'matejcek'));
-echo $array; // YToyOntpOjA7czo1OiJtaWxhbiI7aToxO3M6ODoibWF0ZWpjZWsiO30=
+$input = [
+    'address' => [
+        'street' => 'foo',
+        'zip' => 29404,
+        'c' => [
+            'p' => '5',
+            'e' => 10.6,
+        ],
+    ],
+    'main' => ['a', 'b', 'c'],
+    'email' => 'exampl@foo.com',
+];
 
-$array = new Base64Array('YToyOntpOjA7czo1OiJtaWxhbiI7aToxO3M6ODoibWF0ZWpjZWsiO30=');
-var_dump((array) $array); // array('milan', 'matejcek')
+$iterator = new \RecursiveIteratorIterator(new FlattenArrayIterator($input, '%'));
+$output = [];
+foreach ($iterator as $key => $item) {
+    $output[$key] = $item;
+}
+
+// output is
+// [
+//    'address%street' => 'foo',
+//    'address%zip' => 29404,
+//    'address%c%p' => '5',
+//    'address%c%e' => 10.6,
+//    'main%0' => 'a',
+//    'main%1' => 'b',
+//    'main%2' => 'c',
+//    'email' => 'exampl@foo.com',
+// ]
 ```
 
-ArrayRound
-----------
-
-Non-ended array.
-
-```php
-$array = new ArrayRound(array('foo', 'bar', 'joe'));
-$array->item(); // foo
-$array->item(); // bar
-$array->item(); // joe
-$array->item(); // foo
-// and go next
-```
-
-RangeIterator
+PeriodDayExFromInTo
 -----------
 
-Iterate in range defined by keys. Implemented Linked list.
+Iterate between dates by days. A time is reset to midnight.
 
 ```php
-$range = new RangeIterator(['name' => 'milan', 'surname' => 'matejcek', 'lang' => 'php', 'gender' => 'male']);
-foreach($range->from('lang') as $v) {
-	echo $v;
-}
-// php
-// male
+$endDate = new \DateTime('1996-04-09 08:00:00');
+$period = new PeriodDayExFromInTo(new \DateTime('1989-02-01 07:00:00'), $endDate);
 
-$range->reset();
-foreach($range->to('surname') as $v) {
-	echo $v;
+foreach ($period as $date) {
+    // first date is 1989-02-02
+    // last date is 1996-04-09
 }
-// milan
-// matejcek
-
-
-$range->reset();
-foreach($range->between('surname', 'lang') as $v) {
-	echo $v;
-}
-// matejcek
-// php
 
 ```
