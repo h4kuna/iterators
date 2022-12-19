@@ -8,10 +8,15 @@ use Tester\TestCase;
 
 require __DIR__ . '/../bootstrap.php';
 
+/**
+ * @testCase
+ */
 final class FlattenArrayIteratorTest extends TestCase
 {
 
 	/**
+	 * @param array<string, scalar> $expected
+	 * @param array<string, mixed> $input
 	 * @dataProvider sourceData
 	 */
 	public function testBasic(array $expected, array $input, string $delimiter): void
@@ -26,6 +31,9 @@ final class FlattenArrayIteratorTest extends TestCase
 	}
 
 
+	/**
+	 * @return array<array<mixed>>
+	 */
 	public static function sourceData(): array
 	{
 		$input = [
@@ -83,8 +91,7 @@ final class FlattenArrayIteratorTest extends TestCase
 					'' => 'bar',
 				],
 				'input' => [
-					'' => 'foo',
-					null => 'bar',
+					'' => 'bar',
 				],
 				'delimiter' => '-',
 			],

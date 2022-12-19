@@ -60,7 +60,7 @@ class TextIterator extends \ArrayIterator
 		$text = preg_replace("/\r\n|\n\r|\r/", "\n", $text);
 		assert($text !== null);
 
-		return is_array($text) ? $text : explode("\n", rtrim($text));
+		return explode("\n", rtrim($text));
 	}
 
 
@@ -69,10 +69,7 @@ class TextIterator extends \ArrayIterator
 	 * *************************************************************************
 	 */
 
-	/**
-	 * @param int $flags
-	 */
-	public function setFlags($flags)
+	public function setFlags(int $flags): void
 	{
 		parent::setFlags($flags);
 		$this->flags = $flags;
@@ -86,7 +83,7 @@ class TextIterator extends \ArrayIterator
 
 
 	/** @return LINE */
-	public function current()
+	public function current(): mixed
 	{
 		$content = $this->_current;
 		if ($this->getFlags() & self::CSV_MODE) {
@@ -121,7 +118,15 @@ class TextIterator extends \ArrayIterator
 			if ($this->getFlags() & self::TRIM_LINE) {
 				$this->_current = trim($this->_current);
 			}
-		} while ($this->getFlags() & self::SKIP_EMPTY_LINE && !$this->_current && $this->next() === null);
+		} while ($this->getFlags() & self::SKIP_EMPTY_LINE && !$this->_current && $this->moveInternalPointer());
+
+		return true;
+	}
+
+
+	private function moveInternalPointer(): bool
+	{
+		$this->next();
 
 		return true;
 	}

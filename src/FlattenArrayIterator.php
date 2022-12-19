@@ -3,43 +3,45 @@
 namespace h4kuna\Iterators;
 
 /**
- * @use new \RecursiveIteratorIterator(new FlattenArrayIterator($data));
+ * @example new \RecursiveIteratorIterator(new FlattenArrayIterator($data));
+ * @implements \RecursiveIterator<string, mixed>
  */
-class FlattenArrayIterator implements \RecursiveIterator
+final class FlattenArrayIterator implements \RecursiveIterator
 {
-	private array $data;
 
+	/**
+	 * @var array<int|string>
+	 */
 	private array $keys = [];
 
-	private string $delimiter;
 
-
-	public function __construct(array $data, string $delimiter = '-')
+	/**
+	 * @param array<mixed> $data
+	 */
+	public function __construct(private array $data, private string $delimiter = '-')
 	{
-		$this->data = $data;
-		$this->delimiter = $delimiter;
 	}
 
 
-	public function current()
+	public function current(): mixed
 	{
 		return current($this->data);
 	}
 
 
-	public function next()
+	public function next(): void
 	{
 		next($this->data);
 	}
 
 
-	public function key()
+	public function key(): mixed
 	{
 		return implode($this->delimiter, $this->keys);
 	}
 
 
-	public function valid()
+	public function valid(): bool
 	{
 		$key = key($this->data);
 		if ($key === null) {
@@ -65,15 +67,23 @@ class FlattenArrayIterator implements \RecursiveIterator
 	}
 
 
-	public function getChildren()
+	/**
+	 * @return \RecursiveIterator<string, mixed>
+	 */
+	public function getChildren(): ?\RecursiveIterator
 	{
-		$child = new static($this->current(), $this->delimiter);
+		$current = $this->current();
+		assert(is_array($current));
+		$child = new static($current, $this->delimiter);
 		$child->addKeys($this->keys);
 
 		return $child;
 	}
 
 
+	/**
+	 * @param array<int|string> $keys
+	 */
 	protected function addKeys(array $keys): void
 	{
 		$this->keys = $keys;

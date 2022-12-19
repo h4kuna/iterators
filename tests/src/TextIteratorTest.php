@@ -3,18 +3,17 @@
 namespace h4kuna\Iterators\Tests;
 
 use h4kuna\Iterators\TextIterator;
-use Salamium\Testinium\File;
 use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';
 
+/**
+ * @testCase
+ */
 class TextIteratorTest extends \Tester\TestCase
 {
 
-	/**
-	 * @var TextIterator
-	 */
-	protected $object;
+	protected TextIterator $object;
 
 
 	protected function setUp()
@@ -27,7 +26,7 @@ class TextIteratorTest extends \Tester\TestCase
 	public function testNoSetup(): void
 	{
 		$compare = $this->loadContent();
-		Assert::same(File::load('noSetup.csv'), $compare);
+		Assert::same(loadResult('noSetup'), $compare);
 	}
 
 
@@ -35,7 +34,7 @@ class TextIteratorTest extends \Tester\TestCase
 	{
 		$this->object->setFlags(TextIterator::SKIP_EMPTY_LINE);
 		$compare = $this->loadContent();
-		Assert::same(File::load('emptyLine.csv'), $compare);
+		Assert::same(loadResult('emptyLine'), $compare);
 	}
 
 
@@ -43,7 +42,7 @@ class TextIteratorTest extends \Tester\TestCase
 	{
 		$this->object->setFlags(TextIterator::SKIP_EMPTY_LINE | TextIterator::TRIM_LINE);
 		$compare = $this->loadContent();
-		Assert::same(File::load('trimEmptyLine.csv'), $compare);
+		Assert::same(loadResult('trimEmptyLine'), $compare);
 	}
 
 
@@ -51,7 +50,7 @@ class TextIteratorTest extends \Tester\TestCase
 	{
 		$this->object->setCsv(';');
 		$compare = $this->loadContent();
-		Assert::same(File::load('csvWithHead.csv'), $compare);
+		Assert::same(loadResult('csvWithHead'), $compare);
 	}
 
 
@@ -60,21 +59,18 @@ class TextIteratorTest extends \Tester\TestCase
 		$this->object->setFlags(TextIterator::SKIP_FIRST_LINE);
 		$this->object->setCsv(';');
 		$compare = $this->loadContent();
-		Assert::same(File::load('csv.csv'), $compare);
+		Assert::same(loadResult('csv'), $compare);
 	}
 
 
 	private function loadContent(): string
 	{
-		$compare = '';
+		$compare = [];
 		foreach ($this->object as $row) {
-			if ($compare) {
-				$compare .= "\n";
-			}
-			$compare .= is_array($row) ? serialize($row) : $row;
+			$compare[] = is_array($row) ? serialize($row) : $row;
 		}
 
-		return $compare;
+		return implode("\n", $compare);
 	}
 
 }

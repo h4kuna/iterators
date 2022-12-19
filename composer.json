@@ -12,20 +12,28 @@
     }
   ],
   "require": {
-    "php": ">=7.4.0"
+    "php": ">=8.0"
   },
   "require-dev": {
-    "salamium/testinium": "dev-master",
-    "phpstan/phpstan": "^1.8"
+    "nette/tester": "^2.4",
+    "phpstan/phpstan": "^1.9",
+    "tracy/tracy": "^2.9"
   },
   "autoload": {
     "psr-4": {
-      "h4kuna\\Iterators\\": "src/"
+      "h4kuna\\Iterators\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "h4kuna\\Iterators\\Tests\\": "tests/src"
     }
   },
   "scripts": {
-    "phpstan": [
-      "vendor/bin/phpstan analyse --level max src tests"
-    ]
+    "phpstan": "vendor/bin/phpstan analyse --level max src tests",
+    "tests": "vendor/bin/tester -s -j 4 -C --colors 1 tests/src"
+  },
+  "config": {
+    "sort-packages": true
   }
 }
