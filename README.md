@@ -72,14 +72,15 @@ foreach ($iterator as $key => $item) {
 // ]
 ```
 
-PeriodDayExFromInTo
+PeriodDayFactory
 -----------
 
 Iterate between dates by days. A time is reset to midnight.
 
 ```php
+use h4kuna\Iterators\PeriodDayFactory;
 $endDate = new \DateTime('1996-04-09 08:00:00');
-$period = new PeriodDayExFromInTo(new \DateTime('1989-02-01 07:00:00'), $endDate);
+$period = PeriodDayFactory::createExFromInTo(new \DateTime('1989-02-01 07:00:00'), $endDate);
 
 foreach ($period as $date) {
     // first date is 1989-02-02
