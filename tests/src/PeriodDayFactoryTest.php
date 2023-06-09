@@ -15,138 +15,65 @@ final class PeriodDayFactoryTest extends TestCase
 {
 
 	/**
-	 * @param class-string $class
-	 * @dataProvider dataClass
+	 * @dataProvider provideCreatePeriod
 	 */
-	public function testExFromInTo(string $class): void
+	public function testCreatePeriod(
+		\Closure $case,
+		string $to = '2023-01-02',
+		?string $expectedFirst = null,
+		?string $expectedLast = null
+	): void
 	{
-		$startDate = new $class('1989-02-01 07:00:00');
-		$endDate = new $class('1996-04-09 08:00:00');
-		assert($startDate instanceof \DateTimeInterface && $endDate instanceof \DateTimeInterface);
-		$period = PeriodDayFactory::createExFromInTo($startDate, $endDate);
+		$classes = [\DateTimeImmutable::class, \DateTime::class];
+		foreach ($classes as $class) {
+			$startDate = new $class('2023-01-01 07:00:00');
+			$endDate = new $class("$to 08:00:00");
+			$period = $case($startDate, $endDate);
+			assert($period instanceof \DatePeriod);
 
-		$last = $first = null;
-		$count = 0;
-		foreach ($period as $date) {
-			assert($date instanceof $class);
-			if ($first === null) {
-				$first = $date;
+			$last = $first = null;
+			$count = 0;
+			foreach ($period as $date) {
+				assert($date instanceof $class);
+				if ($first === null) {
+					$first = $date;
+				}
+				$last = $date;
+				++$count;
 			}
-			$last = $date;
-			++$count;
-		}
-		assert($last !== null && $first !== null);
 
-		Assert::same('1989-02-01', $startDate->format('Y-m-d'));
-		Assert::same('1996-04-09', $endDate->format('Y-m-d')); // clone working
-		Assert::same('1989-02-02', $first->format('Y-m-d'));
-		Assert::same('1996-04-09', $last->format('Y-m-d'));
-		Assert::same(2624, $count);
-		Assert::same(2623, $last->diff($first)->days);
+			$expectedLast ??= $expectedFirst;
+
+			if ($expectedFirst === null && $expectedLast === null) {
+				$expectedCount = 0;
+				Assert::null($first);
+				Assert::null($last);
+			} else {
+				assert($expectedFirst !== null && $expectedLast !== null && $last !== null && $first !== null);
+				Assert::same($expectedFirst, $first->format('Y-m-d'));
+				Assert::same($expectedLast, $last->format('Y-m-d'));
+				$expectedCount = (new \DateTime($expectedLast))->diff(new \DateTime($expectedFirst))->days + 1;
+			}
+
+			Assert::same($expectedCount, $count);
+		}
 	}
 
 
 	/**
-	 * @dataProvider dataClass
+	 * @return array<array<string, mixed>>
 	 */
-	public function testExFromExTo(string $class): void
-	{
-		$startDate = new $class('1989-02-01 07:00:00');
-		$endDate = new $class('1996-04-09 08:00:00');
-		assert($startDate instanceof \DateTimeInterface && $endDate instanceof \DateTimeInterface);
-		$period = PeriodDayFactory::createExFromExTo($startDate, $endDate);
-
-		$last = $first = null;
-		$count = 0;
-		foreach ($period as $date) {
-			assert($date instanceof $class);
-			if ($first === null) {
-				$first = $date;
-			}
-			$last = $date;
-			++$count;
-		}
-		assert($last !== null && $first !== null);
-
-		Assert::same('1989-02-01', $startDate->format('Y-m-d'));
-		Assert::same('1996-04-09', $endDate->format('Y-m-d')); // clone working
-		Assert::same('1989-02-02', $first->format('Y-m-d'));
-		Assert::same('1996-04-08', $last->format('Y-m-d'));
-		Assert::same(2623, $count);
-		Assert::same(2622, $last->diff($first)->days);
-	}
-
-
-	/**
-	 * @dataProvider dataClass
-	 */
-	public function testInFromExTo(string $class): void
-	{
-		$startDate = new $class('1989-02-01 07:00:00');
-		$endDate = new $class('1996-04-09 08:00:00');
-		assert($startDate instanceof \DateTimeInterface && $endDate instanceof \DateTimeInterface);
-		$period = PeriodDayFactory::createInFromExTo($startDate, $endDate);
-
-		$last = $first = null;
-		$count = 0;
-		foreach ($period as $date) {
-			assert($date instanceof $class);
-			if ($first === null) {
-				$first = $date;
-			}
-			$last = $date;
-			++$count;
-		}
-		assert($last !== null && $first !== null);
-
-		Assert::same('1989-02-01', $startDate->format('Y-m-d'));
-		Assert::same('1996-04-09', $endDate->format('Y-m-d')); // clone working
-		Assert::same('1989-02-01', $first->format('Y-m-d'));
-		Assert::same('1996-04-08', $last->format('Y-m-d'));
-		Assert::same(2624, $count);
-		Assert::same(2623, $last->diff($first)->days);
-	}
-
-
-	/**
-	 * @dataProvider dataClass
-	 */
-	public function testInFromInTo(string $class): void
-	{
-		$startDate = new $class('1989-02-01 07:00:00');
-		$endDate = new $class('1996-04-09 08:00:00');
-		assert($startDate instanceof \DateTimeInterface && $endDate instanceof \DateTimeInterface);
-		$period = PeriodDayFactory::createInFromInTo($startDate, $endDate);
-
-		$last = $first = null;
-		$count = 0;
-		foreach ($period as $date) {
-			assert($date instanceof $class);
-			if ($first === null) {
-				$first = $date;
-			}
-			$last = $date;
-			++$count;
-		}
-		assert($last !== null && $first !== null);
-
-		Assert::same('1989-02-01', $startDate->format('Y-m-d'));
-		Assert::same('1996-04-09', $endDate->format('Y-m-d')); // clone working
-		Assert::same('1989-02-01', $first->format('Y-m-d'));
-		Assert::same('1996-04-09', $last->format('Y-m-d'));
-		Assert::same(2625, $count);
-		Assert::same(2624, $last->diff($first)->days);
-	}
-
-
-	/**
-	 * @return array<array<string, class-string>>
-	 */
-	public static function dataClass(): array
+	public static function provideCreatePeriod(): array
 	{
 		return [
-			['class' => \DateTime::class,],
-			['class' => \DateTimeImmutable::class,],
+			['case' => fn(...$in) => PeriodDayFactory::createExFromInTo(...$in), 'expectedFirst' => '2023-01-02'],
+			['case' => fn(...$in) => PeriodDayFactory::createExFromExTo(...$in)],
+			['case' => fn(...$in) => PeriodDayFactory::createInFromInTo(...$in), 'expectedFirst' => '2023-01-01', 'expectedLast' => '2023-01-02'],
+			['case' => fn(...$in) => PeriodDayFactory::createInFromExTo(...$in), 'expectedFirst' => '2023-01-01'],
+			['case' => fn(...$in) => PeriodDayFactory::createExFromInTo(...$in), 'expectedFirst' => '2023-01-02', 'expectedLast' => '2023-01-03', 'to' => '2023-01-03'],
+			['case' => fn(...$in) => PeriodDayFactory::createExFromExTo(...$in), 'expectedFirst' => '2023-01-02', 'to' => '2023-01-03'],
+			['case' => fn(...$in) => PeriodDayFactory::createInFromInTo(...$in), 'expectedFirst' => '2023-01-01', 'expectedLast' => '2023-01-03', 'to' => '2023-01-03'],
+			['case' => fn(...$in) => PeriodDayFactory::createInFromExTo(...$in), 'expectedFirst' => '2023-01-01', 'expectedLast' => '2023-01-02', 'to' => '2023-01-03'],
 		];
 	}
 
