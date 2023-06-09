@@ -3,6 +3,7 @@
 namespace h4kuna\Iterators\Tests;
 
 use h4kuna\Iterators\FlattenArrayIterator;
+use h4kuna\Iterators\FlattenArrayRecursiveIterator;
 use Tester\Assert;
 use Tester\TestCase;
 
@@ -11,7 +12,7 @@ require __DIR__ . '/../bootstrap.php';
 /**
  * @testCase
  */
-final class FlattenArrayIteratorTest extends TestCase
+final class FlattenArrayRecursiveIteratorTest extends TestCase
 {
 
 	/**
@@ -21,7 +22,7 @@ final class FlattenArrayIteratorTest extends TestCase
 	 */
 	public function testBasic(array $expected, array $input, string $delimiter): void
 	{
-		$iterator = new \RecursiveIteratorIterator(new FlattenArrayIterator($input, $delimiter));
+		$iterator = new FlattenArrayRecursiveIterator($input, $delimiter);
 		$output = [];
 		foreach ($iterator as $key => $item) {
 			$output[$key] = $item;
@@ -100,4 +101,4 @@ final class FlattenArrayIteratorTest extends TestCase
 
 }
 
-(new FlattenArrayIteratorTest())->run();
+(new FlattenArrayRecursiveIteratorTest())->run();

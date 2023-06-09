@@ -40,6 +40,8 @@ FlattenArrayIterator
 Make one level array from multidimensional with to use delimiter for join keys.
 
 ```php
+use h4kuna\Iterators\FlattenArrayRecursiveIterator;
+
 $input = [
     'address' => [
         'street' => 'foo',
@@ -53,7 +55,7 @@ $input = [
     'email' => 'exampl@foo.com',
 ];
 
-$iterator = new \RecursiveIteratorIterator(new FlattenArrayIterator($input, '%'));
+$iterator = new FlattenArrayRecursiveIterator($input, '%');
 $output = [];
 foreach ($iterator as $key => $item) {
     $output[$key] = $item;
