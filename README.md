@@ -1,3 +1,5 @@
+# Moved to [h4kuna/data-type](https://github.com/h4kuna/data-type/tree/main/src/Iterators)
+
 h4kuna\iterators
 ================
 
